@@ -1099,7 +1099,7 @@ bool P_UseSpecialLine(mobj_t *thing, line_t *line, const int side, const bool bo
         case S1_SetTheTargetSectorsColormap:
             // kln 04/13/25 support for the id24 spec "set target" colormap 2078 (S1)
             for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+                sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
             P_ChangeSwitchTexture(line, false);
             
 
@@ -1109,7 +1109,7 @@ bool P_UseSpecialLine(mobj_t *thing, line_t *line, const int side, const bool bo
         case SR_SetTheTargetSectorsColormap:
             // kln 04/13/25 support for the id24 spec "set target" colormap 2079 (SR)
             for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+                sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
             P_ChangeSwitchTexture(line, true);
 
             return true;

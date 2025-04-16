@@ -2127,7 +2127,12 @@ void P_CrossSpecialLine(line_t *line, const int side, mobj_t *thing, const bool 
         // kln 04/13/25 support for the id24 spec "set target" colormap 2076 (W1)
         case W1_SetTheTargetSectorsColormap:
             for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+            {
+                if (!side) // Front
+                    sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
+                else // Back
+                    sectors[s].id24colormap = sides[*line->sidenum].id24backcolormapindex;
+            }
             line->special = 0;
 
             break;
@@ -2135,7 +2140,12 @@ void P_CrossSpecialLine(line_t *line, const int side, mobj_t *thing, const bool 
         // kln 04/13/25 support for the id24 spec "set target" colormap 2077 (WR)
         case WR_SetTheTargetSectorsColormap:
             for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+            {
+                if (!side) // Front
+                    sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
+                else // Back
+                    sectors[s].id24colormap = sides[*line->sidenum].id24backcolormapindex;
+            }
 
             break;
     }
@@ -2294,7 +2304,7 @@ void P_ShootSpecialLine(const mobj_t *thing, line_t *line)
         case G1_SetTheTargetSectorsColormap:
             // kln 04/13/25 support for the id24 spec "set target" colormap 2080 (G1)
             for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+                sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
             P_ChangeSwitchTexture(line, false);
             
 
@@ -2304,7 +2314,7 @@ void P_ShootSpecialLine(const mobj_t *thing, line_t *line)
         case GR_SetTheTargetSectorsColormap:
             // kln 04/13/25 support for the id24 spec "set target" colormap 2081 (GR)
             for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+                sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
             P_ChangeSwitchTexture(line, true);
 
             break;
@@ -2751,10 +2761,11 @@ void P_SpawnSpecials(void)
 
             // kln 04/13/25: Support for the id24 line special 2075: Set the target sector's colormap (Always)
             // uses a new SHORT in side_t, which is loaded via P_LoadSideDefs2
+            // Uses the front color map index set by the toptexture since this line cannot be activated by the back (or any other way but automatically)
             case SetTheTargetSectorsColormap:
             {
                 for (int s = -1; (s = P_FindSectorFromLineTag(line, s)) >= 0; )
-                    sectors[s].id24colormap = sides[*line->sidenum].id24colormapindex;
+                    sectors[s].id24colormap = sides[*line->sidenum].id24frontcolormapindex;
 
                     break;
             }

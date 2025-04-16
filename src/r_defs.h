@@ -234,7 +234,8 @@ typedef struct
     short               midtexture;
 
     // id24 colormap index
-    short               id24colormapindex;
+    short               id24frontcolormapindex;
+    short               id24backcolormapindex;
 
     // Sector the SideDef is facing.
     sector_t            *sector;
